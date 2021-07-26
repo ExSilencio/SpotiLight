@@ -1,0 +1,73 @@
+import React, { useEffect, useState, Component } from "react"
+import PropTypes from "prop-types"
+import axios from 'axios'
+import Loading from "../components/Loading"
+import Login from "../components/Login"
+import Dashboard from "../components/Dashboard"
+
+
+
+export default class Auth extends Component {
+  static propTypes = {
+    user: PropTypes.shape({
+      name: PropTypes.string,
+      profileImageUrl: PropTypes.string,
+      twitterId: PropTypes.string,
+      screenName: PropTypes.string,
+      _id: PropTypes.string
+    })
+  };
+  
+  state = {
+    user: {},
+    error: null,
+    authenticated: false
+  };
+
+  componentDidMount() {
+    // Fetch does not send cookies. So you should add credentials: 'include'
+    fetch("http://localhost:5000/auth/login", {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true
+      }
+    })
+      .then(response => {
+        if (response.status === 200) return response.json();
+        throw new Error("failed to authenticate user");
+      })
+      .then(responseJson => {
+        this.setState({
+          authenticated: true,
+          user: responseJson.user
+        });
+      })
+      .catch(error => {
+        this.setState({
+          authenticated: false,
+          error: "Failed to authenticate user"
+        });
+      });
+  }
+
+  render() {
+    const { authenticated } = this.state;
+    return(
+      <div>
+        <div>
+          {!authenticated ? (
+            <h1>Welcome!</h1>
+          ) : (
+            <div>
+              <h1>You have login succcessfully!</h1>
+              <h2>Welcome {this.state.user.name}!</h2>
+            </div>
+          )}
+        </div>
+      </div>
+    )
+  }
+}

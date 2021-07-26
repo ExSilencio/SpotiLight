@@ -41,7 +41,7 @@ const Navbar = () => {
               </NavLink>
             </li>
             <li className="nav-item justify-content-end">
-              <NavLink className="nav-link" to="/login">
+              <NavLink className="nav-link" to="/app">
                 App
               </NavLink>
             </li>

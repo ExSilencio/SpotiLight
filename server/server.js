@@ -1,24 +1,36 @@
+const cookieSession = require('cookie-session')
+const cookieParser = require("cookie-parser")
 const express = require('express')
+
+const port = process.env.PORT || 5000
+
 const cors = require('cors')
 const path = require('path')
-const cookieSession = require('cookie-session')
-
-const passport = require('passport')
-const passportSetup = require('./config/passport-setup');
-
 
 // Environment
-require('dotenv').config()
 require('./database');
+require('dotenv').config()
+
+
+const passport = require('passport')
 
 const app = express();
-app.use(cors())
+
+app.use(
+  cors({
+    origin: "http://localhost:3000", // allow to server to accept request from different origin
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true // allow session cookie from browser to pass through
+  })
+)
+
 
 app.use(cookieSession({
   maxAge: 24* 60 * 60 * 1000,
   secret: process.env.cookieKey
 }))
 
+app.use(cookieParser());
 
 app.use(express.json())
 
@@ -28,23 +40,49 @@ app.use(passport.session())
 
 
 // APIs
-const authRoutes = require('./routes/auth-routes')
+const authRoutes = require('./routes/auth')
 app.use('/auth', authRoutes)
 
+const authCheck = (req, res, next) => {
+  if (!req.user) {
+    res.status(401).json({
+      authenticated: false,
+      message: "user has not been authenticated"
+    });
+  } else {
+    next();
+  }
+};
 
-const port = process.env.PORT || 5000
+app.get("/", authCheck, (req, res) => {
+  res.status(200).json({
+    authenticated: true,
+    message: "user successfully authenticated",
+    user: req.user,
+    cookies: req.cookies
+  });
+});
+
+
 
 // express.static delivers static files which are the ones 
 // built when npm run build is run on a React project
+
 /*
-app.use(express.static(path.join(__dirname, '../build')))
+app.use(express.static(path.join(__dirname, '../client/src')))
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../build'))
-})
-*/
+    res.sendFile(path.join(__dirname, '../client/src/index.js'))
+})*/
+
 
 
 app.get('/', (req, res) => {
+  console.log("Reached HOME page")
+  res.send({ user: req.user });
+});
+
+app.get('/test', (req, res) => {
+  console.log("Reached TEST page")
   res.send({ user: req.user });
 });
 

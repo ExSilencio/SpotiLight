@@ -33,7 +33,7 @@ export default function Login() {
 						<Button variant="secondary" size="lg" onClick={handleClose}>
 							<span style={{fontWeight: 600}}>Cancel</span>
 						</Button>
-						<Button variant="success" size="lg" id="btn-login" href="/app">
+						<Button variant="success" size="lg" id="btn-login" href="auth/login">
 							<img 
 								className="logo"
 								src={spotifyLogo}

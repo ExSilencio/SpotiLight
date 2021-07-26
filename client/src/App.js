@@ -1,22 +1,22 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import './App.css';
-import { useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
-import axios from 'axios'
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 // Components
 import Navbar from "./components/Navbar"
+import Auth from "./pages/Auth"
+import Login from "./components/Login"
 import About from "./pages/About"
 import Home from "./pages/Home"
-import Login from "./components/Login"
-import Dashboard from "./components/Dashboard"
 
 // Assets
 import band from "./images/band.mp4"
 
 //const code = new URLSearchParams(window.location.search).get("code")
 
+
 function App() {
+
   return(
     <>
       <video autoPlay muted loop id="bgVideo">
@@ -28,15 +28,11 @@ function App() {
           <Route exact path="/">
             <Home />
           </Route>
-          <Route exact path="/login">
-            <Login />
-          </Route>
           <Route path="/app">
-          <Dashboard />
-                     
+            <Auth />
           </Route>
           <Route path="/about">
-              <About />
+            <About />
           </Route>
         </Switch>
       </Router>

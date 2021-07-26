@@ -2,17 +2,17 @@ import { useState, useEffect } from 'react'
 import { Container, Form } from 'react-bootstrap'
 import TrackSearchResult from "./TrackSearchResult"
 import useAuth from "../hooks/useAuth"
+import Auth from "../pages/Auth"
 import SpotifyWebApi from "spotify-web-api-node"
 import Player from "./Player"
-import axios from "axios"
 import FFT from './FFT'
 
 
 
 const spotifyApi = new SpotifyWebApi()
 
-export default function Dashboard({ code }) {
-	const accessToken = useAuth(code)
+export default function Dashboard({ auth }) {
+	const accessToken = Auth(auth)
 	const [search, setSearch] = useState("")
 	const [searchResults, setSearchResults] = useState([])
 	const [playingTrack, setPlayingTrack] = useState()
@@ -76,7 +76,7 @@ export default function Dashboard({ code }) {
 	)
 	
 	return (
-		//console.log({code})
+		//console.log({auth})
 
 	<Container className="d-flex flex-column py-2" style={{ height: "93vh", backgroundColor: "rgba(255, 255, 255, 0.25)" }}>
 		<Form.Control 

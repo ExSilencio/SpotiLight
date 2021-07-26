@@ -9,7 +9,7 @@ export default function useAuth(code) {
 	
 	useEffect(() => {
 		axios
-			.get('http://localhost:3001/auth/login', {})
+			.get('/auth/callback', {})
 			.then(res => {
 				setAccessToken(res.accessToken)
 				setRefreshToken(res.refreshToken)
@@ -21,6 +21,24 @@ export default function useAuth(code) {
 				window.location = "/"
 			})
 	}, [code])
+
+	
+	useEffect(() => {
+		axios
+			.get('/auth/login', {})
+			.then(res => {
+				setAccessToken(res.accessToken)
+				setRefreshToken(res.refreshToken)
+				setExpiresIn(res.expiresIn)
+				//window.history.pushState({}, null, "/app")
+			})
+			.catch(() => {
+				alert("An error occured.")
+				window.location = "/"
+			})
+	}, [code])
+
+
 
 	useEffect(() => {
 		if (!refreshToken || !expiresIn) return
