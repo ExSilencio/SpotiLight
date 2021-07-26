@@ -1,0 +1,30 @@
+body{
+    padding-top: 6vh;
+    background-color: #191414;
+}
+
+.logo{
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+#bgVideo{
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: -1;
+}
+
+div.modal-content{
+    background: rgba(255, 255, 255, 0.25) !important;
+}
+
+#btn-login{
+    background-color: #1DB954;
+    color: white;
+    font-weight: 600;
+}
